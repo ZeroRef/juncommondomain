@@ -1,9 +1,14 @@
 package org.zeroref.juncommondomain;
 
 import org.junit.Test;
+import org.zeroref.jpgstreamstore.EventData;
+import org.zeroref.jpgstreamstore.EventStream;
+import org.zeroref.jpgstreamstore.StoreRecord;
+import org.zeroref.jpgstreamstore.StreamId;
 import org.zeroref.jpgstreamstore.storage.PgEventStorage;
-import org.zeroref.juncommondomain.core.Repository;
 import org.zeroref.juncommondomain.domain.InventoryItem;
+import org.zeroref.juncommondomain.domain.InventoryItemCreated;
+import org.zeroref.juncommondomain.domain.RecentItemsService;
 import org.zeroref.juncommondomain.persistence.EventBasedRepository;
 
 import java.io.IOException;
@@ -29,5 +34,22 @@ public class AppTest
         repository.save(t2, t2.getVersion());
 
         System.out.println( "Done, yay!" );
+
+
+        RecentItemsService service = new RecentItemsService();
+
+        EventDispatcher dispatcher = new EventDispatcher();
+        dispatcher.registerHandler(service, InventoryItemCreated.class);
+
+
+        for(StoreRecord e : eventStore.eventsSince(0)){
+            StreamId streamId = new StreamId(e.getStreamName());
+            int version = e.getStreamVersion();
+            EventStream stream = eventStore.eventStreamSince(streamId, version);
+
+            for(EventData ev : stream.events()){
+                System.out.println("..." + ev);
+            }
+        }
     }
 }

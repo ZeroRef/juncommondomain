@@ -1,7 +1,7 @@
 package org.zeroref.juncommondomain.domain;
 
-import org.zeroref.juncommondomain.core.AggregateRoot;
-import org.zeroref.juncommondomain.core.DomainEvent;
+import org.zeroref.juncommondomain.AggregateRoot;
+import org.zeroref.juncommondomain.DomainEvent;
 
 import java.util.UUID;
 

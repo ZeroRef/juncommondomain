@@ -1,4 +1,4 @@
-package org.zeroref.juncommondomain.core;
+package org.zeroref.juncommondomain;
 
 import java.util.UUID;
 

@@ -4,9 +4,9 @@ import org.zeroref.jpgstreamstore.EventData;
 import org.zeroref.jpgstreamstore.EventStore;
 import org.zeroref.jpgstreamstore.EventStream;
 import org.zeroref.jpgstreamstore.StreamId;
-import org.zeroref.juncommondomain.core.AggregateRoot;
-import org.zeroref.juncommondomain.core.DomainEvent;
-import org.zeroref.juncommondomain.core.Repository;
+import org.zeroref.juncommondomain.AggregateRoot;
+import org.zeroref.juncommondomain.DomainEvent;
+import org.zeroref.juncommondomain.Repository;
 import shaded.com.google.gson.Gson;
 import shaded.com.google.gson.GsonBuilder;
 
