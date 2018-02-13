@@ -14,7 +14,7 @@ import org.zeroref.juncommondomain.persistence.EventBasedRepository;
 import java.io.IOException;
 import java.util.UUID;
 
-public class AppTest
+public class EventDispatcherTest
 {
     private static String connectionString = "jdbc:postgresql://localhost:5432/juncommondomain";
 
@@ -48,7 +48,9 @@ public class AppTest
             EventStream stream = eventStore.eventStreamSince(streamId, version);
 
             for(EventData ev : stream.events()){
-                System.out.println("..." + ev);
+                //System.out.println("..." + ev);
+
+                dispatcher.publish((DomainEvent) ev.getBody());
             }
         }
     }

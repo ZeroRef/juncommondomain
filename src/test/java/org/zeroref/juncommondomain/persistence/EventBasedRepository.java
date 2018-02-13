@@ -36,7 +36,7 @@ public class EventBasedRepository<T extends AggregateRoot> implements Repository
         EventStream eventStream = storage.fullEventStreamFor(streamId);
 
         List<DomainEvent> history = eventStream
-                .events().stream().map(EventBasedRepository::unwrap)
+                .events().stream().map(e-> (DomainEvent)e.getBody())
                 .collect(Collectors.toList());
 
         result.loadFromHistory(history);
@@ -49,35 +49,9 @@ public class EventBasedRepository<T extends AggregateRoot> implements Repository
         StreamId streamId = new StreamId(aggregate.getId().toString());
 
         List<EventData> changeSet = aggregate.getUncommittedChanges()
-                .stream().map(EventBasedRepository::wrap)
+                .stream().map(uc -> new EventData(uc))
                 .collect(Collectors.toList());
 
         storage.appendToStream(streamId, expectedVersion, changeSet);
-    }
-
-    private static EventData wrap(DomainEvent evt) {
-        HashMap<String, String> props = new HashMap<>();
-        props.put("type", evt.getClass().getName());
-        props.put("data", serializer.toJson(evt));
-
-        return new EventData(props);
-    }
-
-    private static DomainEvent unwrap(EventData ed) {
-        Map<String, String> dataProps = ed.getProps();
-
-        String data = dataProps.get("data");
-
-        String type = dataProps.get("type");
-        Class<DomainEvent> eventClass;
-        try {
-            eventClass = (Class<DomainEvent>) Class.forName(type);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-            throw new IllegalStateException("Unable to load type: " + type);
-        }
-
-        return serializer.fromJson(data, eventClass);
     }
 }
