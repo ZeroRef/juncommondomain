@@ -7,12 +7,7 @@ import org.zeroref.jpgstreamstore.StreamId;
 import org.zeroref.juncommondomain.AggregateRoot;
 import org.zeroref.juncommondomain.DomainEvent;
 import org.zeroref.juncommondomain.Repository;
-import shaded.com.google.gson.Gson;
-import shaded.com.google.gson.GsonBuilder;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,7 +15,6 @@ public class EventBasedRepository<T extends AggregateRoot> implements Repository
 {
     private final EventStore storage;
     private final AggregateRoot.Factory<T> factory;
-    private static Gson serializer = new GsonBuilder().create();
 
     public EventBasedRepository(EventStore storage, Class<T> type)
     {

@@ -21,7 +21,7 @@ public class EventDispatcherTest
     @Test
     public void test() throws IOException {
         PgEventStorage eventStore = new PgEventStorage(connectionString);
-        eventStore.createSchema();
+        eventStore.advanced().createSchema();
 
         Repository<InventoryItem> repository = new EventBasedRepository<>(eventStore, InventoryItem.class);
 
@@ -42,7 +42,7 @@ public class EventDispatcherTest
         dispatcher.registerHandler(service, InventoryItemCreated.class);
 
 
-        for(StoreRecord e : eventStore.eventsSince(0)){
+        for(StoreRecord e : eventStore.advanced().eventsSince(0)){
             StreamId streamId = new StreamId(e.getStreamName());
             int version = e.getStreamVersion();
             EventStream stream = eventStore.eventStreamSince(streamId, version);
