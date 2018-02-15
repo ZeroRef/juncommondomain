@@ -2,13 +2,10 @@ package org.zeroref.juncommondomain;
 
 import org.junit.Test;
 import org.zeroref.jpgstreamstore.EventData;
-import org.zeroref.jpgstreamstore.EventStream;
-import org.zeroref.jpgstreamstore.StoreRecord;
-import org.zeroref.jpgstreamstore.StreamId;
 import org.zeroref.jpgstreamstore.storage.PgEventStorage;
 import org.zeroref.juncommondomain.domain.InventoryItem;
 import org.zeroref.juncommondomain.domain.InventoryItemCreated;
-import org.zeroref.juncommondomain.domain.RecentItemsService;
+import org.zeroref.juncommondomain.domain.RecentItemsProjection;
 import org.zeroref.juncommondomain.persistence.EventBasedRepository;
 
 import java.io.IOException;
@@ -36,10 +33,10 @@ public class EventDispatcherTest
         System.out.println( "Done, yay!" );
 
 
-        RecentItemsService service = new RecentItemsService();
+        RecentItemsProjection projection = new RecentItemsProjection();
 
         EventDispatcher dispatcher = new EventDispatcher();
-        dispatcher.registerHandler(service, InventoryItemCreated.class);
+        dispatcher.registerHandler(projection, InventoryItemCreated.class);
 
 
         for(EventData e : eventStore.eventsSince(0)){
