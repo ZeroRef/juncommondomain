@@ -42,16 +42,8 @@ public class EventDispatcherTest
         dispatcher.registerHandler(service, InventoryItemCreated.class);
 
 
-        for(StoreRecord e : eventStore.advanced().eventsSince(0)){
-            StreamId streamId = new StreamId(e.getStreamName());
-            int version = e.getStreamVersion();
-            EventStream stream = eventStore.eventStreamSince(streamId, version);
-
-            for(EventData ev : stream.events()){
-                //System.out.println("..." + ev);
-
-                dispatcher.publish((DomainEvent) ev.getBody());
-            }
+        for(EventData e : eventStore.eventsSince(0)){
+            dispatcher.publish((DomainEvent) e.getBody());
         }
     }
 }
